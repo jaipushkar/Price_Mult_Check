@@ -1,0 +1,26 @@
+ SELECT
+    description,
+    price_mult
+FROM
+    Backup_ThriveMarket_09_20_2023
+WHERE
+    (
+        description LIKE '%[0-9] Pack%'
+        OR description LIKE '%[0-9]-Pack%'
+        OR description LIKE '%Pack%'
+    )
+    AND (
+        price_mult IS NULL 
+        OR description NOT LIKE '%' + price_mult + '%' 
+    )
+    AND (
+        CHARINDEX(' Pack', description) > 0 -- Description contains ' Pack'
+        OR CHARINDEX('-Pack', description) > 0 -- Description contains '-Pack'
+    )
+    AND (
+        PATINDEX('%[0-9] Pack%', description) > 0 
+        OR PATINDEX('%[0-9]-Pack%', description) > 0
+        OR PATINDEX('%[0-9] Pack', description) > 0 
+        OR PATINDEX('%[0-9]-Pack', description) > 0 
+    )
+	 AND eindicator not like  '%w%';
